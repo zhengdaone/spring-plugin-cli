@@ -1,0 +1,50 @@
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 180000
+logging:
+  path: ./log
+  file: ./${logging.path}/carbon.log
+server:
+  port: 8888
+  maxHttpHeaderSize: 10000000
+spring:
+  profiles:
+    active: local
+  application:
+    name: carbon
+  cache:
+    type: redis
+  redis:
+    host: 192.168.0.119
+    port: 6379
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+---
+spring:
+  profiles: development
+  storage:
+    storageMode: alioss
+    #     storageMode: local
+    mediaFolder: media/
+  datasource:
+    url: jdbc:mysql://local-1002/carbon?characterEncoding=utf-8
+    username: root
+    password: 123456
+logging:
+  level:
+    root: info
+---
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/carbon?characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+  redis:
+    host: 192.168.0.119
+    port: 6379
